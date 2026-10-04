@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBS Sequence Overlay (Transparent)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Przezroczyste tło na całym obszarze */
+        body {
+            background-color: rgba(0, 0, 0, 0);
+            margin: 0px auto;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            color: #ffffff;
+        }
+
+        /* Główny kontener animacji */
+        #overlay-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.9));
+        }
+
+        /* Kontener na obrazy po lewej stronie */
+        .images-wrapper {
+            position: absolute;
+            left: 20px;
+            width: 260px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-img {
+            position: absolute;
+            height: 85%;
+            max-width: 250px;
+            object-fit: contain;
+            transform: translateX(-150px);
+            opacity: 0;
+            filter: drop-shadow(0 0 15px rgba(255, 170, 0, 0.5));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(1deg); }
+        }
+
+        /* Kontener na teksty po prawej stronie */
+        .slides-wrapper {
+            position: absolute;
+            right: 20px;
+            width: 480px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-text {
+            position: absolute;
+            width: 100%;
+            transform: translateX(150px);
+            opacity: 0;
+            text-align: center;
+            line-height: 1.15;
+            text-transform: lowercase;
+            text-shadow: 
+                3px 3px 0px #000,
+                -3px -3px 0px #000,
+                3px -3px 0px #000,
+                -3px 3px 0px #000,
+                0px 4px 10px rgba(0, 0, 0, 0.9);
+        }
+
+        /* Skalowanie czcionek */
+        .line-main {
+            font-size: 3.2rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: -1px;
+        }
+
+        .line-sub {
+            font-size: 2.3rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-top: 4px;
+        }
+
+        .line-small {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #dddddd;
+            margin-bottom: 4px;
+        }
+
+        /* Wyróżnienia */
+        .highlight-gold {
+            color: #ffaa00;
+            text-transform: uppercase;
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 2px 12px;
+            border-radius: 10px;
+            border: 2px solid #ffaa00;
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.5);
+        }
+
+        .highlight-percent {
+            color: #ffaa00;
+            font-weight: 900;
+        }
+
+        .highlight-discord {
+            color: #5865F2;
+            text-shadow: 
+                3px 3px 0px #000,
+                -3px -3px 0px #000,
+                3px -3px 0px #000,
+                -3px 3px 0px #000,
+                0 0 15px rgba(88, 101, 242, 0.7);
+        }
+
+        .highlight-ver {
+            color: #55ff55;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="overlay-container">
+        <!-- Obrazy po lewej -->
+        <div class="images-wrapper">
+            <img id="imgSlide1" class="slide-img" src="" alt="Obraz Slajd 1">
+            <img id="imgSlide2" class="slide-img" src="" alt="Obraz Slajd 2">
+            <img id="imgSlide3" class="slide-img" src="" alt="Obraz Slajd 3">
+        </div>
+
+        <!-- Teksty po prawej -->
+        <div class="slides-wrapper">
+            
+            <!-- SLAJD 1: Sklep + Kod -->
+            <div class="slide-text" id="textSlide1">
+                <div class="line-small">na</div>
+                <div class="line-main">sklep.remiza.lol</div>
+                <div class="line-sub">z kodem <span class="highlight-gold" id="codeText">X</span></div>
+                <div class="line-sub">masz <span class="highlight-percent" id="percentText">-30%</span> taniej</div>
+            </div>
+
+            <!-- SLAJD 2: IP + Wersja -->
+            <div class="slide-text" id="textSlide2">
+                <div class="line-small">dołącz na serwer</div>
+                <div class="line-main" style="color: #ffaa00;">remiza.lol</div>
+                <div class="line-sub">wersja <span class="highlight-ver">1.20.X - 26.3</span></div>
+            </div>
+
+            <!-- SLAJD 3: Discord -->
+            <div class="slide-text" id="textSlide3">
+                <div class="line-small">dołącz na naszego</div>
+                <div class="line-main highlight-discord">discorda</div>
+                <div class="line-sub">dc.remiza.lol</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Parametry URL (?code=RABAT&mc=NICK_MC&percent=20&duration=6&pause=8)
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code') || 'X';
+        const mcNick = urlParams.get('mc') || code; // Używa podanego 'mc' lub domyślnie wartości z 'code'
+        const percent = urlParams.get('percent') || '20';
+        const slideDuration = parseFloat(urlParams.get('duration')) || 6; 
+        const loopPause = parseFloat(urlParams.get('pause')) || 8;        
+
+        // Wstawianie wartości tekstowych
+        document.getElementById('codeText').innerText = code;
+        document.getElementById('percentText').innerText = `-${percent}%`;
+
+        // Ładowanie obrazków
+        const skinName = (mcNick !== 'X') ? mcNick : 'WCR5';
+        const img1 = document.getElementById('imgSlide1');
+        const img2 = document.getElementById('imgSlide2');
+        const img3 = document.getElementById('imgSlide3');
+
+        img1.src = urlParams.get('img1') || `https://visage.surgeplay.com/bust/512/${skinName}`;
+        img2.src = urlParams.get('img2') || `render1.png`;
+        img3.src = urlParams.get('img3') || `https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png`;
+
+        img1.onerror = () => { img1.src = 'https://visage.surgeplay.com/full/512/Steve'; };
+        img2.onerror = () => { img2.src = 'https://visage.surgeplay.com/bust/512/Steve'; };
+
+        // Animacja pętli GSAP
+        const masterTL = gsap.timeline({ repeat: -1, repeatDelay: loopPause });
+
+        masterTL
+            // === SLAJD 1 ===
+            .to(img1, { x: 0, opacity: 1, duration: 1.0, ease: "power3.out" }, 0)
+            .to(document.getElementById('textSlide1'), { x: 0, opacity: 1, duration: 1.0, ease: "power3.out" }, 0.2)
+            .to({}, { duration: slideDuration })
+
+            // Przejście: Slajd 1 -> Slajd 2
+            .to(img1, { x: -150, opacity: 0, duration: 0.6, ease: "power2.in" })
+            .to(document.getElementById('textSlide1'), { x: -100, opacity: 0, duration: 0.6, ease: "power2.in" }, "-=0.6")
+
+            // === SLAJD 2 ===
+            .to(img2, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "+=0.1")
+            .to(document.getElementById('textSlide2'), { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.6")
+            .to({}, { duration: slideDuration })
+
+            // Przejście: Slajd 2 -> Slajd 3
+            .to(img2, { x: -150, opacity: 0, duration: 0.6, ease: "power2.in" })
+            .to(document.getElementById('textSlide2'), { x: -100, opacity: 0, duration: 0.6, ease: "power2.in" }, "-=0.6")
+
+            // === SLAJD 3 ===
+            .to(img3, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "+=0.1")
+            .to(document.getElementById('textSlide3'), { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.6")
+            .to({}, { duration: slideDuration })
+
+            // Powrót ze Slajdu 3 do początku pętli
+            .to(img3, { x: -150, opacity: 0, duration: 0.8, ease: "power2.in" })
+            .to(document.getElementById('textSlide3'), { x: 100, opacity: 0, duration: 0.8, ease: "power2.in" }, "-=0.8");
+
+    </script>
+</body>
+</html>
